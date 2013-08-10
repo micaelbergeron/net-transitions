@@ -25,7 +25,7 @@ namespace Transitions
         /// <summary>
         /// Singleton's getInstance method.
         /// </summary>
-        public static TransitionManager getInstance()
+        public static TransitionManager GetInstance()
         {
             return _instance ?? (_instance = new TransitionManager());
         }
@@ -34,13 +34,13 @@ namespace Transitions
         /// You register a transition with the manager here. This will start to run
         /// the transition as the manager's timer ticks.
         /// </summary>
-        public void register(Transition transition)
+        public void Register(Transition transition)
         {
             lock (_lock)
             {
                 // We check to see if the properties of this transition
                 // are already being animated by any existing transitions...
-                removeDuplicates(transition);
+                RemoveDuplicates(transition);
 
                 // We add the transition to the collection we manage, and 
                 // observe it so that we know when it has completed...
@@ -58,12 +58,12 @@ namespace Transitions
         /// transition passed in. If so, we remove the duplicated properties from the 
         /// older transitions.
         /// </summary>
-        private void removeDuplicates(Transition transition)
+        private void RemoveDuplicates(Transition transition)
         {
             // We look through the set of transitions we're currently managing...
             foreach (KeyValuePair<Transition, bool> pair in _transitions)
             {
-                removeDuplicates(transition, pair.Key);
+                RemoveDuplicates(transition, pair.Key);
             }
         }
 
@@ -71,7 +71,7 @@ namespace Transitions
         /// Finds any properties in the old-transition that are also in the new one,
         /// and removes them from the old one.
         /// </summary>
-        private void removeDuplicates(Transition newTransition, Transition oldTransition)
+        private void RemoveDuplicates(Transition newTransition, Transition oldTransition)
         {
             // Note: This checking might be a bit more efficient if it did the checking
             //       with a set rather than looking through lists. That said, it is only done 

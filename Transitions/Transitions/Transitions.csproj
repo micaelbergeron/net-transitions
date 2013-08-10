@@ -45,13 +45,13 @@
   <ItemGroup>
     <Compile Include="ITransitionType.cs" />
     <Compile Include="IManagedType.cs" />
-    <Compile Include="ManagedType_Color.cs" />
-    <Compile Include="ManagedType_Double.cs" />
-    <Compile Include="ManagedType_Float.cs" />
-    <Compile Include="ManagedType_String.cs" />
+    <Compile Include="ColorManagedType.cs" />
+    <Compile Include="DoubleManagedType.cs" />
+    <Compile Include="FloatManagedType.cs" />
+    <Compile Include="StringManagedType.cs" />
     <Compile Include="Transition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ManagedType_Int.cs" />
+    <Compile Include="Int32ManagedType.cs" />
     <Compile Include="TransitionChain.cs" />
     <Compile Include="TransitionElement.cs" />
     <Compile Include="TransitionManager.cs" />

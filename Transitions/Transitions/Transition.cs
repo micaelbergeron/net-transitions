@@ -44,11 +44,11 @@ namespace Transitions
         /// </summary>
         static Transition()
         {
-            RegisterType(new ManagedType_Int());
-            RegisterType(new ManagedType_Float());
-			RegisterType(new ManagedType_Double());
-            RegisterType(new ManagedType_Color());
-            RegisterType(new ManagedType_String());
+            RegisterType(new Int32ManagedType());
+            RegisterType(new FloatManagedType());
+			RegisterType(new DoubleManagedType());
+            RegisterType(new ColorManagedType());
+            RegisterType(new StringManagedType());
         }
 
         #endregion
@@ -115,7 +115,7 @@ namespace Transitions
 		/// <summary>
 		/// Adds a property that should be animated as part of this transition.
 		/// </summary>
-		public void Add(object target, string strPropertyName, object destinationValue)
+		public void Add<T>(object target, string strPropertyName, T destinationValue)
 		{
 			// We get the property info...
 			Type targetType = target.GetType();
@@ -138,11 +138,11 @@ namespace Transitions
                 throw new Exception("Property is not both getable and setable: " + strPropertyName);
             }
 
-            IManagedType managedType = MapManagedTypes[propertyType];
+            var managedType = MapManagedTypes[propertyType] as ManagedType<T>;
             
             // We can manage this type, so we store the information for the
 			// transition of this property...
-			var info = new TransitionedPropertyInfo
+			var info = new TransitionedPropertyInfo<T>
 			           {
 			               EndValue = destinationValue,
 			               Target = target,
@@ -175,7 +175,7 @@ namespace Transitions
 			_stopwatch.Start();
 
             // We register this transition with the transition manager...
-            TransitionManager.getInstance().register(this);
+            TransitionManager.GetInstance().Register(this);
 		}
 
         #endregion
@@ -186,7 +186,7 @@ namespace Transitions
         /// Property that returns a list of information about each property managed
         /// by this transition.
         /// </summary>
-        internal IList<TransitionedPropertyInfo> TransitionedProperties
+        internal IList<object> TransitionedProperties
         {
             get { return _listTransitionedProperties; }
         }
@@ -194,7 +194,7 @@ namespace Transitions
         /// <summary>
         /// We remove the property with the info passed in from the transition.
         /// </summary>
-        internal void RemoveProperty(TransitionedPropertyInfo info)
+        internal void RemoveProperty(object info)
         {
             lock (_lock)
             {
@@ -262,7 +262,7 @@ namespace Transitions
 		/// invokes itself on the GUI thread if the property is being invoked on a GUI 
 		/// object.
 		/// </summary>
-		private void SetProperty(object sender, PropertyUpdateArgs args)
+		private void SetProperty(object sender, PropertyUpdateArgs<> args)
 		{
             try
             {
@@ -330,9 +330,7 @@ namespace Transitions
             // Is the object passed in a Control?
             var controlTarget = target as Control;
             if (controlTarget == null)
-            {
                 return false;
-            }
 
             // Is it disposed or disposing?
             return controlTarget.IsDisposed || controlTarget.Disposing;
@@ -345,9 +343,9 @@ namespace Transitions
 		/// <summary>
 		/// Registers a transition-type. We hold them in a map.
 		/// </summary>
-		private static void RegisterType(IManagedType transitionType)
+        private static void RegisterType<T>(ManagedType<T> transitionType)
 		{
-			var type = transitionType.GetManagedType();
+		    var type = typeof (T);
 			MapManagedTypes[type] = transitionType;
 		}
 
@@ -357,7 +355,7 @@ namespace Transitions
 
 		// A map of Type info to IManagedType objects. These are all the types that we
         // know how to perform transactions on...
-        private static readonly IDictionary<Type, IManagedType> MapManagedTypes = new Dictionary<Type, IManagedType>();
+        private static readonly IDictionary<Type, object> MapManagedTypes = new Dictionary<Type, object>();
 
         #endregion
 
@@ -368,17 +366,17 @@ namespace Transitions
 
 		// Holds information about one property on one taregt object that we are performing
 		// a transition on...
-		internal class TransitionedPropertyInfo
+		internal class TransitionedPropertyInfo<T>
 		{
 			public object StartValue;
 			public object EndValue;
 			public object Target;
 			public PropertyInfo PropertyInfo;
-			public IManagedType ManagedType;
+            public ManagedType<T> ManagedType;
 
-            public TransitionedPropertyInfo Copy()
+            public TransitionedPropertyInfo<T> Copy()
             {
-                var info = new TransitionedPropertyInfo
+                var info = new TransitionedPropertyInfo<T>
                            {
                                StartValue = StartValue,
                                EndValue = EndValue,
@@ -391,15 +389,15 @@ namespace Transitions
 		}
 
 		// The collection of properties that the current transition is animating...
-		private readonly IList<TransitionedPropertyInfo> _listTransitionedProperties = new List<TransitionedPropertyInfo>();
+        private readonly IList<object> _listTransitionedProperties = new List<object>();
 
 		// Helps us find the time interval from the time the transition starts to each timer tick...
 		private readonly Stopwatch _stopwatch = new Stopwatch();
 
         // Event args used for the event we raise when updating a property...
-		private class PropertyUpdateArgs : EventArgs
+		private class PropertyUpdateArgs<T> : EventArgs
 		{
-			public PropertyUpdateArgs(object t, PropertyInfo pi, object v)
+			public PropertyUpdateArgs(object t, PropertyInfo pi, T v)
 			{
 				Target = t;
 				PropertyInfo = pi;
@@ -407,7 +405,7 @@ namespace Transitions
 			}
 			public readonly object Target;
 			public readonly PropertyInfo PropertyInfo;
-			public readonly object Value;
+			public readonly T Value;
 		}
 
         // An object used to lock the list of transitioned properties, as it can be 
