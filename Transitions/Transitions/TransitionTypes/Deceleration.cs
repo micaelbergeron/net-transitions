@@ -14,11 +14,11 @@ namespace Transitions.TransitionTypes
 		/// Constructor. You pass in the time that the transition 
 		/// will take (in milliseconds).
 		/// </summary>
-		public Deceleration(int iTransitionTime)
+		public Deceleration(int transitionTime)
 		{
-			if (iTransitionTime <= 0)
+			if (transitionTime <= 0)
                 throw new ArgumentException("Transition time must be greater than zero.");
-			_transitionTime = iTransitionTime;
+			_transitionTime = transitionTime;
 		}
 
 		#endregion
@@ -36,10 +36,10 @@ namespace Transitions.TransitionTypes
         public bool OnTimer(int time, out double percentage)
 		{
 			// We find the percentage time elapsed...
-			double dElapsed = time / _transitionTime;
-			percentage = dElapsed * (2.0 - dElapsed);
+			double elapsed = time / _transitionTime;
+			percentage = elapsed * (2.0 - elapsed);
 
-            if (dElapsed < 1.0)
+            if (elapsed < 1.0)
                 return false;
             percentage = 1.0;
             return true;

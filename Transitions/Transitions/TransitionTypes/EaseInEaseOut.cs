@@ -14,11 +14,11 @@ namespace Transitions.TransitionTypes
 		/// Constructor. You pass in the time that the transition 
 		/// will take (in milliseconds).
 		/// </summary>
-		public EaseInEaseOut(int iTransitionTime)
+		public EaseInEaseOut(int transitionTime)
 		{
-			if (iTransitionTime <= 0)
+			if (transitionTime <= 0)
                 throw new ArgumentException("Transition time must be greater than zero.");
-			_transitionTime = iTransitionTime;
+			_transitionTime = transitionTime;
 		}
 
 		#endregion

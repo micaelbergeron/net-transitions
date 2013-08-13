@@ -14,11 +14,11 @@ namespace Transitions.TransitionTypes
         /// Constructor. You pass in the time (in milliseconds) that the
         /// transition will take.
         /// </summary>
-        public Linear(int iTransitionTime)
+        public Linear(int transitionTime)
         {
-			if (iTransitionTime <= 0)
+			if (transitionTime <= 0)
                 throw new ArgumentException("Transition time must be greater than zero.");
-			_transitionTime = iTransitionTime;
+			_transitionTime = transitionTime;
         }
 
         #endregion
@@ -30,7 +30,7 @@ namespace Transitions.TransitionTypes
 		/// </summary>
         public bool OnTimer(int time, out double percentage)
 		{
-			percentage = (time / _transitionTime);
+			percentage = time / _transitionTime;
 			if (percentage >= 1.0)
 			{
 				percentage = 1.0;
