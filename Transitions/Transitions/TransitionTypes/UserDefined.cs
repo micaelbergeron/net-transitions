@@ -77,9 +77,9 @@ namespace Transitions.TransitionTypes
         /// <summary>
         /// Called to find the value for the movement of properties for the time passed in.
         /// </summary>
-        public bool OnTimer(int iTime, out double dPercentage)
+        public bool OnTimer(int time, out double percentage)
         {
-            double dTransitionTimeFraction = iTime / _transitionTime;
+            double dTransitionTimeFraction = time / _transitionTime;
 
             // We find the information for the element that we are currently processing...
             double dElementStartTime;
@@ -121,14 +121,14 @@ namespace Transitions.TransitionTypes
 
             // We now know how far through the transition we have moved, so we can interpolate
             // the start and end values by this amount...
-            dPercentage = Utility.Interpolate(dElementStartValue, dElementEndValue, dElementDistance);
+            percentage = Utility.Interpolate(dElementStartValue, dElementEndValue, dElementDistance);
 
             // Has the transition completed?
-            if (iTime >= _transitionTime)
+            if (time >= _transitionTime)
             {
                 // The transition has completed, so we make sure that
                 // it is at its final value...
-                dPercentage = dElementEndValue;
+                percentage = dElementEndValue;
                 return true;
             }
             return false;

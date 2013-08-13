@@ -28,12 +28,12 @@ namespace Transitions.TransitionTypes
 		/// <summary>
 		/// We return the percentage completed.
 		/// </summary>
-        public bool OnTimer(int iTime, out double dPercentage)
+        public bool OnTimer(int time, out double percentage)
 		{
-			dPercentage = (iTime / _transitionTime);
-			if (dPercentage >= 1.0)
+			percentage = (time / _transitionTime);
+			if (percentage >= 1.0)
 			{
-				dPercentage = 1.0;
+				percentage = 1.0;
 				return true;
 			}
             return false;

@@ -32,15 +32,15 @@ namespace Transitions.TransitionTypes
 		/// We accelerate as at the rate needed (a=4) to get to 0.5 at t=0.5, and
 		/// then decelerate at the same rate to end up at 1.0 at t=1.0.
 		/// </summary>
-        public bool OnTimer(int iTime, out double dPercentage)
+        public bool OnTimer(int time, out double percentage)
 		{
 			// We find the percentage time elapsed...
-			double dElapsed = iTime / _transitionTime;
-            dPercentage = Utility.ConvertLinearToEaseInEaseOut(dElapsed);
+			double dElapsed = time / _transitionTime;
+            percentage = Utility.ConvertLinearToEaseInEaseOut(dElapsed);
 
 			if (dElapsed >= 1.0)
 			{
-                dPercentage = 1.0;
+                percentage = 1.0;
                 return true;
             }
             return false;
