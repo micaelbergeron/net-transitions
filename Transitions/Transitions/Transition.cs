@@ -49,13 +49,13 @@ namespace Transitions
         /// </summary>
         static Transition()
         {
-            RegisterType(new Int32());
-            RegisterType(new Float());
-            RegisterType(new Double());
-            RegisterType(new Color());
-            RegisterType(new String());
-            RegisterType(new Rectangle());
-            RegisterType(new Point());
+            RegisterType<int>(new Int32());
+            RegisterType<float>(new Float());
+            RegisterType<double>(new Double());
+            RegisterType<string>(new String());
+            RegisterType<System.Drawing.Color>(new Color());
+            RegisterType<System.Drawing.Rectangle>(new Rectangle());
+            RegisterType<System.Drawing.Point>(new Point());
         }
 
         #endregion
@@ -344,10 +344,9 @@ namespace Transitions
 		/// <summary>
 		/// Registers a transition-type. We hold them in a map.
 		/// </summary>
-		private static void RegisterType(IManagedType transitionType)
+		private static void RegisterType<T>(IManagedType transitionType)
 		{
-			var type = transitionType.GetManagedType();
-			MapManagedTypes[type] = transitionType;
+			MapManagedTypes[typeof(T)] = transitionType;
 		}
 
 		#endregion
