@@ -34,18 +34,18 @@ namespace Transitions
         /// You register a transition with the manager here. This will start to run
         /// the transition as the manager's timer ticks.
         /// </summary>
-        public void register(Transition transition)
+        public void Register(Transition transition)
         {
             lock (_lock)
             {
                 // We check to see if the properties of this transition
                 // are already being animated by any existing transitions...
-                removeDuplicates(transition);
+                RemoveDuplicates(transition);
 
                 // We add the transition to the collection we manage, and 
                 // observe it so that we know when it has completed...
                 _transitions[transition] = true;
-                transition.TransitionCompletedEvent += onTransitionCompleted;
+                transition.TransitionCompletedEvent += OnTransitionCompleted;
             }
         }
 
@@ -58,20 +58,18 @@ namespace Transitions
         /// transition passed in. If so, we remove the duplicated properties from the 
         /// older transitions.
         /// </summary>
-        private void removeDuplicates(Transition transition)
+        private void RemoveDuplicates(Transition transition)
         {
             // We look through the set of transitions we're currently managing...
-            foreach (KeyValuePair<Transition, bool> pair in _transitions)
-            {
-                removeDuplicates(transition, pair.Key);
-            }
+            foreach (var pair in _transitions)
+                RemoveDuplicates(transition, pair.Key);
         }
 
         /// <summary>
         /// Finds any properties in the old-transition that are also in the new one,
         /// and removes them from the old one.
         /// </summary>
-        private void removeDuplicates(Transition newTransition, Transition oldTransition)
+        private void RemoveDuplicates(Transition newTransition, Transition oldTransition)
         {
             // Note: This checking might be a bit more efficient if it did the checking
             //       with a set rather than looking through lists. That said, it is only done 
@@ -79,18 +77,18 @@ namespace Transitions
             //       timer, so I don't think this matters too much.
 
             // We get the list of properties for the old and new transitions...
-            IList<Transition.TransitionedPropertyInfo> newProperties = newTransition.TransitionedProperties;
-            IList<Transition.TransitionedPropertyInfo> oldProperties = oldTransition.TransitionedProperties;
+            var newProperties = newTransition.TransitionedProperties;
+            var oldProperties = oldTransition.TransitionedProperties;
 
             // We loop through the old properties backwards (as we may be removing 
             // items from the list if we find a match)...
             for (int i = oldProperties.Count - 1; i >= 0; i--)
             {
                 // We get one of the properties from the old transition...
-                Transition.TransitionedPropertyInfo oldProperty = oldProperties[i];
+                var oldProperty = oldProperties[i];
 
                 // Is this property part of the new transition?
-                foreach (Transition.TransitionedPropertyInfo newProperty in newProperties)
+                foreach (var newProperty in newProperties)
                 {
                     if (oldProperty.Target == newProperty.Target
                         &&
@@ -110,21 +108,19 @@ namespace Transitions
         private TransitionManager()
         {
             _timer = new Timer(15);
-            _timer.Elapsed += onTimerElapsed;
+            _timer.Elapsed += OnTimerElapsed;
             _timer.Enabled = true;
         }
 
         /// <summary>
         /// Called when the timer ticks.
         /// </summary>
-        private void onTimerElapsed(object sender, ElapsedEventArgs e)
+        private void OnTimerElapsed(object sender, ElapsedEventArgs e)
         {
             // We turn the timer off while we process the tick, in case the
             // actions take longer than the tick itself...
             if (_timer == null)
-            {
                 return;
-            }
             _timer.Enabled = false;
 
             IList<Transition> listTransitions;
@@ -132,11 +128,9 @@ namespace Transitions
             {
                 // We take a copy of the collection of transitions as elements 
                 // might be removed as we iterate through it...
-                listTransitions = new List<Transition>();
+                listTransitions = new List<Transition>(_transitions.Count);
                 foreach (KeyValuePair<Transition, bool> pair in _transitions)
-                {
                     listTransitions.Add(pair.Key);
-                }
             }
 
             // We tick the timer for each transition we're managing...
@@ -152,11 +146,11 @@ namespace Transitions
         /// <summary>
         /// Called when a transition has completed. 
         /// </summary>
-        private void onTransitionCompleted(object sender, Transition.Args e)
+        private void OnTransitionCompleted(object sender, Transition.Args e)
         {
             // We stop observing the transition...
-            Transition transition = (Transition)sender;
-            transition.TransitionCompletedEvent -= onTransitionCompleted;
+            var transition = sender as Transition;
+            transition.TransitionCompletedEvent -= OnTransitionCompleted;
 
             // We remove the transition from the collection we're managing...
             lock (_lock)

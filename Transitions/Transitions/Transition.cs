@@ -176,7 +176,7 @@ namespace Transitions
             _stopwatch.Start();
 
             // We register this transition with the transition manager...
-            TransitionManager.GetInstance().register(this);
+            TransitionManager.GetInstance().Register(this);
         }
 
         #endregion
