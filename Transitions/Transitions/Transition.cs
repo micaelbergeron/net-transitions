@@ -215,8 +215,7 @@ namespace Transitions
 
             // b.
             double dPercentage;
-            bool bCompleted;
-            _transitionMethod.OnTimer(iElapsedTime, out dPercentage, out bCompleted);
+            bool bCompleted = _transitionMethod.OnTimer(iElapsedTime, out dPercentage);
 
             // We take a copy of the list of properties we are transitioning, as
             // they can be changed by another thread while this method is running...

@@ -17,9 +17,7 @@ namespace Transitions.TransitionTypes
 		public EaseInEaseOut(int iTransitionTime)
 		{
 			if (iTransitionTime <= 0)
-			{
-				throw new Exception("Transition time must be greater than zero.");
-			}
+                throw new ArgumentException("Transition time must be greater than zero.");
 			_transitionTime = iTransitionTime;
 		}
 
@@ -34,7 +32,7 @@ namespace Transitions.TransitionTypes
 		/// We accelerate as at the rate needed (a=4) to get to 0.5 at t=0.5, and
 		/// then decelerate at the same rate to end up at 1.0 at t=1.0.
 		/// </summary>
-		public void OnTimer(int iTime, out double dPercentage, out bool bCompleted)
+        public bool OnTimer(int iTime, out double dPercentage)
 		{
 			// We find the percentage time elapsed...
 			double dElapsed = iTime / _transitionTime;
@@ -42,13 +40,10 @@ namespace Transitions.TransitionTypes
 
 			if (dElapsed >= 1.0)
 			{
-				dPercentage = 1.0;
-				bCompleted = true;
-			}
-			else
-			{
-				bCompleted = false;
-			}
+                dPercentage = 1.0;
+                return true;
+            }
+            return false;
 		}
 
 		#endregion

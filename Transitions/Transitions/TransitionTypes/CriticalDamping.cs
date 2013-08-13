@@ -17,9 +17,7 @@ namespace Transitions.TransitionTypes
 		public CriticalDamping(int iTransitionTime)
 		{
 			if (iTransitionTime <= 0)
-			{
-				throw new Exception("Transition time must be greater than zero.");
-			}
+				throw new ArgumentException("Transition time must be greater than zero.");
 			_transitionTime = iTransitionTime;
 		}
 
@@ -29,7 +27,7 @@ namespace Transitions.TransitionTypes
 
 		/// <summary>
 		/// </summary>
-		public void OnTimer(int iTime, out double dPercentage, out bool bCompleted)
+		public bool OnTimer(int iTime, out double dPercentage)
 		{
 			// We find the percentage time elapsed...
 			double dElapsed = iTime / _transitionTime;
@@ -37,13 +35,10 @@ namespace Transitions.TransitionTypes
 
 			if (dElapsed >= 1.0)
 			{
-				dPercentage = 1.0;
-				bCompleted = true;
-			}
-			else
-			{
-				bCompleted = false;
-			}
+                dPercentage = 1.0;
+                return true;
+            }
+            return false;
 		}
 
 		#endregion

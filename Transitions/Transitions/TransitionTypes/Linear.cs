@@ -17,9 +17,7 @@ namespace Transitions.TransitionTypes
         public Linear(int iTransitionTime)
         {
 			if (iTransitionTime <= 0)
-			{
-				throw new Exception("Transition time must be greater than zero.");
-			}
+                throw new ArgumentException("Transition time must be greater than zero.");
 			_transitionTime = iTransitionTime;
         }
 
@@ -30,18 +28,15 @@ namespace Transitions.TransitionTypes
 		/// <summary>
 		/// We return the percentage completed.
 		/// </summary>
-		public void OnTimer(int iTime, out double dPercentage, out bool bCompleted)
+        public bool OnTimer(int iTime, out double dPercentage)
 		{
 			dPercentage = (iTime / _transitionTime);
 			if (dPercentage >= 1.0)
 			{
 				dPercentage = 1.0;
-				bCompleted = true;
+				return true;
 			}
-			else
-			{
-				bCompleted = false;
-			}
+            return false;
 		}
 
 		#endregion

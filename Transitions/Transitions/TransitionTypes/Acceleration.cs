@@ -34,20 +34,17 @@ namespace Transitions.TransitionTypes
 		/// at t=1.0 is 2, so the formula just becomes:
 		///   s = t^2
 		/// </summary>
-		public void OnTimer(int iTime, out double dPercentage, out bool bCompleted)
+		public bool OnTimer(int iTime, out double dPercentage)
 		{
 			// We find the percentage time elapsed...
 			double dElapsed = iTime / _transitionTime;
 			dPercentage = dElapsed * dElapsed;
 			if (dElapsed >= 1.0)
 			{
-				dPercentage = 1.0;
-				bCompleted = true;
-			}
-			else
-			{
-				bCompleted = false;
-			}
+                dPercentage = 1.0;
+                return true;
+            }
+            return false;
 		}
 
 		#endregion

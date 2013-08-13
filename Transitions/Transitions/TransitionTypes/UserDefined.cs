@@ -77,7 +77,7 @@ namespace Transitions.TransitionTypes
         /// <summary>
         /// Called to find the value for the movement of properties for the time passed in.
         /// </summary>
-        public void OnTimer(int iTime, out double dPercentage, out bool bCompleted)
+        public bool OnTimer(int iTime, out double dPercentage)
         {
             double dTransitionTimeFraction = iTime / _transitionTime;
 
@@ -128,13 +128,10 @@ namespace Transitions.TransitionTypes
             {
                 // The transition has completed, so we make sure that
                 // it is at its final value...
-                bCompleted = true;
                 dPercentage = dElementEndValue;
+                return true;
             }
-            else
-            {
-                bCompleted = false;
-            }
+            return false;
         }
 
         /// <summary>

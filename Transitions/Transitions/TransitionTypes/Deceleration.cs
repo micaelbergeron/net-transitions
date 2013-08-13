@@ -17,9 +17,7 @@ namespace Transitions.TransitionTypes
 		public Deceleration(int iTransitionTime)
 		{
 			if (iTransitionTime <= 0)
-			{
-				throw new Exception("Transition time must be greater than zero.");
-			}
+                throw new ArgumentException("Transition time must be greater than zero.");
 			_transitionTime = iTransitionTime;
 		}
 
@@ -35,20 +33,17 @@ namespace Transitions.TransitionTypes
 		/// at t=1.0 is -2, so the formula becomes:
 		///   s = t(2-t)
 		/// </summary>
-		public void OnTimer(int iTime, out double dPercentage, out bool bCompleted)
+        public bool OnTimer(int iTime, out double dPercentage)
 		{
 			// We find the percentage time elapsed...
 			double dElapsed = iTime / _transitionTime;
 			dPercentage = dElapsed * (2.0 - dElapsed);
 			if (dElapsed >= 1.0)
 			{
-				dPercentage = 1.0;
-				bCompleted = true;
-			}
-			else
-			{
-				bCompleted = false;
-			}
+                dPercentage = 1.0;
+                return true;
+            }
+            return false;
 		}
 
 		#endregion
