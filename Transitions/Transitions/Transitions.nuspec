@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>net-ui-transitions</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Niklas Mollenhauer</authors>
+    <owners>Niklas Mollenhauer</owners>
+    <projectUrl>https://github.com/micaelbergeron/net-transitions</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A simple .NET UI Transition library.</description>
+    <copyright>Copyright 2015</copyright>
+  </metadata>
+</package>

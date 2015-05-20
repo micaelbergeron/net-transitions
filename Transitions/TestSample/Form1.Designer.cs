@@ -158,8 +158,8 @@
             // 
             // gbBounce
             // 
-            this.gbBounce.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.gbBounce.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.gbBounce.Controls.Add(this.cmdBounceMe);
             this.gbBounce.Location = new System.Drawing.Point(12, 50);
             this.gbBounce.Name = "gbBounce";
@@ -170,8 +170,8 @@
             // 
             // gbThrowAndCatch
             // 
-            this.gbThrowAndCatch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.gbThrowAndCatch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.gbThrowAndCatch.Controls.Add(this.cmdThrowAndCatch);
             this.gbThrowAndCatch.Location = new System.Drawing.Point(-211, 50);
             this.gbThrowAndCatch.Name = "gbThrowAndCatch";
@@ -202,6 +202,8 @@
             // 
             // gbRipple
             // 
+            this.gbRipple.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gbRipple.Controls.Add(this.cmdRipple);
             this.gbRipple.Controls.Add(this.ctrlRipple);
             this.gbRipple.Location = new System.Drawing.Point(229, 50);
